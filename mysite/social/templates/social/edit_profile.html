@@ -1,0 +1,12 @@
+{% extends 'social/base.html' %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+<div class="col-md-6 mx-auto">
+  <h3>Edit Your Profile</h3>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary w-100 mt-2">Save Changes</button>
+  </form>
+</div>
+{% endblock %}

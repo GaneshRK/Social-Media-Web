@@ -1,0 +1,23 @@
+{% extends 'social/base.html' %}
+{% block title %}Post Detail{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <h5><a href="{% url 'profile' post.user.username %}">@{{ post.user.username }}</a></h5>
+    <p>{{ post.content }}</p>
+    <small class="text-muted">{{ post.created_at }}</small>
+    <hr>
+    <h6>Comments:</h6>
+    {% for comment in comments %}
+      <p><strong>{{ comment.user.username }}</strong>: {{ comment.text }}</p>
+    {% empty %}
+      <p>No comments yet.</p>
+    {% endfor %}
+    <form method="POST" class="mt-2">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-secondary btn-sm">Add Comment</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

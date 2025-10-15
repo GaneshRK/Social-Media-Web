@@ -1,0 +1,14 @@
+{% extends "social/base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="card mx-auto" style="max-width: 400px;">
+  <div class="card-body">
+    <h3 class="text-center mb-3">Login</h3>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
