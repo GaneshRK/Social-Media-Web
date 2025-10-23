@@ -1,0 +1,25 @@
+{% extends 'social/base.html' %}
+{% block content %}
+<h3>Search results for "{{ query }}"</h3>
+<hr>
+
+{% if users %}
+  <ul class="list-group">
+    {% for user in users %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <a href="{% url 'social:profile' user.username %}"><strong>@{{ user.username }}</strong></a>
+          {% if user.profile.bio %}
+            <p class="mb-0 text-muted small">{{ user.profile.bio|truncatewords:10 }}</p>
+          {% endif %}
+        </div>
+        {% if user != request.user %}
+          <a href="{% url 'social:profile' user.username %}" class="btn btn-sm btn-outline-primary">View</a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No users found.</p>
+{% endif %}
+{% endblock %}

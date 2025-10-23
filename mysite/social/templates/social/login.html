@@ -9,6 +9,7 @@
       {{ form.as_p }}
       <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
+    <p class="mt-2 text-center">Don't have an account? <a href="{% url 'social:signup' %}">Register</a></p>
   </div>
 </div>
 {% endblock %}

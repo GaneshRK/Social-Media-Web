@@ -1,12 +1,28 @@
 {% extends 'social/base.html' %}
 {% block title %}Edit Profile{% endblock %}
+
 {% block content %}
-<div class="col-md-6 mx-auto">
-  <h3>Edit Your Profile</h3>
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary w-100 mt-2">Save Changes</button>
-  </form>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%; border-radius: 12px;">
+    <h3 class="text-center mb-4">👤 Edit Your Profile</h3>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label for="id_bio" class="form-label fw-semibold">Bio</label>
+        {{ form.bio }}
+      </div>
+
+      <div class="mb-3">
+        <label for="id_profile_picture" class="form-label fw-semibold">Profile Picture</label>
+        {{ form.profile_picture }}
+      </div>
+
+      <button class="btn btn-primary w-100 py-2 mt-3 fw-semibold">
+        <i class="fa fa-save me-1"></i> Save Changes
+      </button>
+    </form>
+  </div>
 </div>
 {% endblock %}

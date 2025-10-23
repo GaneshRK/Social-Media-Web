@@ -1,27 +1,64 @@
-{% extends "social/base.html" %}
-{% block title %}Feed{% endblock %}
+{% extends 'social/base.html' %}
 {% block content %}
-<h2 class="mb-4">Feed</h2>
 
-{% for post in posts %}
-<div class="card mb-3">
-  <div class="card-body">
-    <h5 class="card-title">{{ post.user.username }}</h5>
-    <p class="card-text">{{ post.content }}</p>
-    {% if post.image %}
-      <img src="{{ post.image.url }}" class="img-fluid mb-2">
-    {% endif %}
-    <p>
-      <a href="{% url 'social:post_detail' post.id %}" class="btn btn-sm btn-outline-primary">Comments</a>
-      
-        Like ({{ post.likes.count }})
-      </a>
-    </p>
-  </div>
+<!-- 🏠 Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0">Home Feed</h2>
+  <a href="{% url 'social:create_post' %}" class="btn btn-outline-primary">
+    ➕ Add Post
+  </a>
 </div>
-{% empty %}
-<p>No posts yet.</p>
-{% endfor %}
 
-<a href="{% url 'social:create_post' %}" class="btn btn-success mt-3">Create Post</a>
+<!-- 📸 Centered Feed Container -->
+<div class="d-flex flex-column align-items-center">
+
+  {% for post in posts %}
+    <div class="card mb-4 shadow-sm" style="max-width: 600px; width: 100%;">
+      <div class="card-body">
+        <!-- 👤 Post Header -->
+        <div class="d-flex align-items-center mb-3">
+          <img src="{{ post.author.profile.profile_picture.url|default:'/static/images/default-avatar.png' }}"
+               class="rounded-circle me-2" width="40" height="40" alt="Profile">
+          <a href="{% url 'social:profile' post.author.username %}" class="fw-bold text-dark text-decoration-none">
+            {{ post.author.username }}
+          </a>
+        </div>
+
+        <!-- 📝 Post Content -->
+        {% if post.content %}
+          <p class="mb-3">{{ post.content }}</p>
+        {% endif %}
+
+        <!-- 📷 Post Image -->
+        {% if post.image %}
+          <div class="text-center mb-3">
+            <img src="{{ post.image.url }}" class="img-fluid rounded" alt="Post image">
+          </div>
+        {% endif %}
+
+        <!-- ❤️💬 Buttons BELOW image -->
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <div>
+            <form action="{% url 'social:toggle_like' post.id %}" method="post" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-danger btn-sm">
+                ❤️ {{ post.likes.count }}
+              </button>
+            </form>
+
+            <a href="{% url 'social:post_detail' post.id %}" class="btn btn-outline-secondary btn-sm">
+              💬 {{ post.comments.count }} Comments
+            </a>
+          </div>
+
+          <small class="text-muted">{{ post.created_at|timesince }} ago</small>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-center">No posts yet. Follow users to see their posts.</p>
+  {% endfor %}
+
+</div>
+
 {% endblock %}
